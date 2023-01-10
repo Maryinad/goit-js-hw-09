@@ -1,6 +1,9 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const startBtn = document.querySelector('[data-start]');
+const inputField = document.querySelector('#datetime-picker');
+
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -8,37 +11,39 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
+
+    startBtn.disabled = false;
+    startBtn.addEventListener('click', () => {
+      timer.start();
+    });
+    timer.deadline = selectedDates[0];
   },
 };
 
 flatpickr('#datetime-picker', options);
 
 const timer = {
-  dedline: new Date(2023, 0, 10, 5, 3),
+  deadline: new Date('selectedDates[0]'),
   intervalID: null,
   isActive: false,
 
   rootSelector: document.querySelector('.timer'),
-  //   btnStart: document.querySelector('[data-start]'),
-
-  //   startTimer() {
-  //     btnStart.addEventListener('click', () => {
-  //       this.start();
-  //     });
-  //   },
 
   start() {
+    const myTimer = this;
     this.intervalID = setInterval(() => {
       const currentTime = Date.now();
 
-      const diffTime = this.dedline - currentTime;
+      const diffTime = myTimer.deadline - currentTime;
 
       if (diffTime <= 0) {
         this.stop();
 
         return;
       }
-      const { days, hours, minutes, seconds } = this.convertMs(diffTime);
+      console.log(this);
+      console.log(myTimer);
+      const { days, hours, minutes, seconds } = myTimer.convertMs(diffTime);
 
       this.rootSelector.querySelector('[data-days]').textContent = days;
       this.rootSelector.querySelector('[data-hours]').textContent = hours;
@@ -79,14 +84,6 @@ const timer = {
   // console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 };
 
-// timer.start();
-
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
 }
-
-const btnStart = document.querySelector('[data-start]');
-
-const startTimer = btnStart.addEventListener('click', e => {
-  timer.start();
-});
