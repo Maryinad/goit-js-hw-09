@@ -22,12 +22,14 @@ function createPromise(position, delay) {
 function onCreatePromises(e) {
   e.preventDefault();
 
-  let delay = e.currentTarget.elements.delay.value;
-  const step = e.currentTarget.elements.step.value;
-  const amount = e.currentTarget.elements.amount.value;
+  let delay = e.currentTarget.elements.delay.value * 1;
+  const step = e.currentTarget.elements.step.value * 1;
+  const amount = e.currentTarget.elements.amount.value * 1;
+  // console.log(delay, step, amount);
 
   for (let i = 1; i <= amount; i += 1) {
-    // delay += step;
+    delay += step;
+    console.log(i, delay);
     createPromise(i, delay)
       .then(({ position, delay }) => {
         Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
