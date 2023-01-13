@@ -1,8 +1,11 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const startBtn = document.querySelector('[data-start]');
 const inputField = document.querySelector('#datetime-picker');
+
+startBtn.disabled = true;
 
 const options = {
   enableTime: true,
@@ -10,9 +13,14 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    // console.log(selectedDates[0]);
+    if (selectedDates[0] < Date.now()) {
+      Notify.failure('Please choose a date in the future');
+      startBtn.disabled = true;
+    } else {
+      startBtn.disabled = false;
+    }
 
-    startBtn.disabled = false;
     startBtn.addEventListener('click', () => {
       timer.start();
     });
@@ -23,18 +31,17 @@ const options = {
 flatpickr('#datetime-picker', options);
 
 const timer = {
-  deadline: new Date('selectedDates[0]'),
+  //   deadline: new Date('selectedDates[0]'),
   intervalID: null,
   isActive: false,
 
   rootSelector: document.querySelector('.timer'),
 
   start() {
-    const myTimer = this;
     this.intervalID = setInterval(() => {
       const currentTime = Date.now();
 
-      const diffTime = myTimer.deadline - currentTime;
+      const diffTime = this.deadline - currentTime;
 
       if (diffTime <= 0) {
         this.stop();
@@ -42,8 +49,7 @@ const timer = {
         return;
       }
       console.log(this);
-      console.log(myTimer);
-      const { days, hours, minutes, seconds } = myTimer.convertMs(diffTime);
+      const { days, hours, minutes, seconds } = this.convertMs(diffTime);
 
       this.rootSelector.querySelector('[data-days]').textContent = days;
       this.rootSelector.querySelector('[data-hours]').textContent = hours;
