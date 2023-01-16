@@ -3,8 +3,8 @@ refs = {
   btnStop: document.querySelector('.js-btn-stop'),
   body: document.querySelector('body'),
 };
-// console.log('Hi');
 let timerID = null;
+console.log(timerID);
 
 refs.btnStart.addEventListener('click', changeColor);
 
