@@ -14,7 +14,7 @@ function getRandomHexColor() {
 
 function changeColor() {
   refs.btnStart.disabled = true;
-  timerId = setInterval(() => {
+  timerID = setInterval(() => {
     refs.body.style.backgroundColor = getRandomHexColor();
   }, 1000);
 }
