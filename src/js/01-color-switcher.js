@@ -21,5 +21,5 @@ function changeColor() {
 
 refs.btnStop.addEventListener('click', () => {
   refs.btnStart.disabled = false;
-  clearInterval(timerId);
+  clearInterval(timerID);
 });
