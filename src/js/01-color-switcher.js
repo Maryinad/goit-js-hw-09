@@ -1,10 +1,10 @@
-refs = {
+const refs = {
   btnStart: document.querySelector('.js-btn-start'),
   btnStop: document.querySelector('.js-btn-stop'),
   body: document.querySelector('body'),
 };
 let timerID = null;
-console.log(timerID);
+// console.log(timerID);
 
 refs.btnStart.addEventListener('click', changeColor);
 
